@@ -1,5 +1,5 @@
 import { create } from "@mui/material/styles/createTransitions";
-import React from "react";
+import axios from "axios";
 import { useSelector } from "react-redux";
 
 const useAxios = () => {
@@ -13,7 +13,7 @@ const useAxios = () => {
   const axiosPublic = axios.create({
     baseURL: `${process.env.REACT_APP_BASE_URL}`,
   });
-  return axiosToken, axiosToken;
+  return {axiosToken, axiosPublic};
 };
 
 export default useAxios;

@@ -1,18 +1,35 @@
-import Avatar from "@mui/material/Avatar"
-import Container from "@mui/material/Container"
-import Grid from "@mui/material/Grid"
-import Typography from "@mui/material/Typography"
-import LockIcon from "@mui/icons-material/Lock"
-import image from "../assets/result.svg"
-import { Link } from "react-router-dom"
-import Box from "@mui/material/Box"
-import TextField from "@mui/material/TextField"
-import { Button } from "@mui/material"
+import Avatar from "@mui/material/Avatar";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import LockIcon from "@mui/icons-material/Lock";
+import image from "../assets/result.svg";
+import { Link } from "react-router-dom";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import { Button } from "@mui/material";
+import { Formik, Form } from "formik";
+import { object, string } from "yup";
+import useApiRequest from "../services/useApiRequest";
 
 const Login = () => {
+  const { login } = useApiRequest();
+  let loginSchema = object({
+    email: string().email().required(),
+    password: string()
+      .required()
+      .min(8, "En az 8 karakter olmalı")
+      .max(16, "En fazla 16 karakter olmalı")
+      .matches(/\d+/, "Şifre en az bir rakam içermeli")
+      .matches(/[a-z]/, "Şifre en az bir küçük harf içermeli")
+      .matches(/[A-Z]/, "Şifre en az bir büyük harf içermeli")
+      .matches(
+        /[@$!%*?&]+/,
+        "Şifre en az bir özel karakter [@$!%*?&] içermeli"
+      ),
+  });
 
-  
-    return (
+  return (
     <Container maxWidth="lg">
       <Grid
         container
@@ -49,28 +66,60 @@ const Login = () => {
             Login
           </Typography>
 
-          <Box
-            component="form"
-            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            validationSchema={loginSchema}
+            onSubmit={(values, actions) => {
+              login(values);
+              actions.resetForm();
+              actions.setSubmitting(false);
+            }}
           >
-            <TextField
-              label="Email"
-              name="email"
-              id="email"
-              type="email"
-              variant="outlined"
-            />
-            <TextField
-              label="password"
-              name="password"
-              id="password"
-              type="password"
-              variant="outlined"
-            />
-            <Button variant="contained" type="submit">
-              Submit
-            </Button>
-          </Box>
+            {({
+              values,
+              handleChange,
+              handleBlur,
+              touched,
+              errors,
+              isSubmitting,
+            }) => (
+              <Form>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <TextField
+                    label="Email"
+                    name="email"
+                    id="email"
+                    type="email"
+                    variant="outlined"
+                    value={values.email}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={touched.email && Boolean(errors.email)}
+                    helperText={touched.email && errors.email}
+                  />
+                  <TextField
+                    label="password"
+                    name="password"
+                    id="password"
+                    type="password"
+                    variant="outlined"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.password}
+                    error={touched.password && Boolean(errors.password)}
+                    helperText={touched.password && errors.password}
+                  />
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    disabled={isSubmitting}
+                  >
+                    Submit
+                  </Button>
+                </Box>
+              </Form>
+            )}
+          </Formik>
 
           <Box sx={{ textAlign: "center", mt: 2 }}>
             <Link to="/register">Do you have not an account?</Link>
@@ -84,7 +133,7 @@ const Login = () => {
         </Grid>
       </Grid>
     </Container>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
