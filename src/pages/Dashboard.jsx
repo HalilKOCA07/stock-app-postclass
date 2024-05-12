@@ -1,26 +1,26 @@
-
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import { useSelector } from 'react-redux';
-import useApiRequest from '../services/useApiRequest';
+import * as React from "react";
+import PropTypes from "prop-types";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import MenuIcon from "@mui/icons-material/Menu";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { useSelector } from "react-redux";
+import useApiRequest from "../services/useApiRequest";
 import Button from "@mui/material/Button";
-import { IconButton } from '@mui/material';
-import MenuList from '../components/MenuList';
+import { IconButton } from "@mui/material";
+import MenuList from "../components/MenuList";
+import { Outlet } from "react-router-dom";
 
 const drawerWidth = 240;
 
-function MuiDrawer(props) {
-    const { user } = useSelector((state) => state.auth);
-    console.log(user);
-    const { logout } = useApiRequest();
+function Dashboard(props) {
+  const { user } = useSelector((state) => state.auth);
+  console.log(user);
+  const { logout } = useApiRequest();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
@@ -41,17 +41,17 @@ function MuiDrawer(props) {
   };
 
   // Remove this const when copying and pasting into your project.
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
   const drawer = (
     <div>
       <Toolbar />
-      <Divider />
       <MenuList />
     </div>
   );
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -61,12 +61,12 @@ function MuiDrawer(props) {
         }}
       >
         <Toolbar>
-        <IconButton
+          <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{ mr: 2, display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
@@ -96,8 +96,12 @@ function MuiDrawer(props) {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, bgcolor:"black" },
+            display: { xs: "block", sm: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+              bgcolor: "black",
+            },
           }}
         >
           {drawer}
@@ -105,28 +109,36 @@ function MuiDrawer(props) {
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, 
-            bgcolor:"#212121",
-             },
+            display: { xs: "none", sm: "block" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+              bgcolor: "#212121",
+            },
           }}
           open
         >
-         {drawer}
+          {drawer}
         </Drawer>
       </Box>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+        }}
       >
-        {/* <Toolbar /> */}
+        <Toolbar />
+        <Outlet />
       </Box>
+      
     </Box>
   );
 }
 
-MuiDrawer.propTypes = {
+Dashboard.propTypes = {
   window: PropTypes.func,
 };
 
-export default MuiDrawer;
+export default Dashboard;

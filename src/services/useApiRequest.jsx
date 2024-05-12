@@ -13,7 +13,7 @@ import axios from "axios";
 const useApiRequest = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { axiosPublic, axiosToken } = useAxios();
+  const { axiosToken } = useAxios();
 
   const login = async (userData) => {
     dispatch(fetchStart());
