@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   firms: [],
   brands:[],
+  products:[],
   loading: false,
   error: false,
 };

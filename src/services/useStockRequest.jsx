@@ -22,6 +22,18 @@ const useStockRequest = () => {
       console.log(error);
     }
   };
+  const getProducts = async (path = "products") => {
+    dispatch(fetchStart());
+    try {
+      const { data } = await axiosToken.get(`${path}`);
+      console.log(data.data);
+      const stockData = data.data;
+      dispatch(getApiStockSuccess({ stockData, path }));
+    } catch (error) {
+      dispatch(fetchFail());
+      console.log(error);
+    }
+  };
 
   const postStock = async (path = "firms", infoFirm) => {
     dispatch(fetchStart());
@@ -55,7 +67,7 @@ const useStockRequest = () => {
     }
   };
 
-  return { getStock, postStock, putStock, deleteStock };
+  return { getStock, postStock, putStock, deleteStock, getProducts };
 };
 
 export default useStockRequest;
