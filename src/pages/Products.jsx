@@ -9,8 +9,6 @@ import { ErrorMessage, LoadingSkeleton, WarningMessage } from "../components/Dat
 const Products = () => {
   const { getStock } = useStockRequest();
   const {products, loading, error } = useSelector((state) => state.stock);
-  console.log("loading",loading);
-  console.log("error",error);
   const [info, setInfo] = useState({
     name: "",
     categoryId: "",

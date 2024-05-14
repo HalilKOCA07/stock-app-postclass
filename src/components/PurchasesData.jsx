@@ -3,17 +3,18 @@ import Box from "@mui/material/Box";
 import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import useStockRequest from "../services/useStockRequest";
 
-export default function ProductsData({open}) {
+export default function PurchasesData({open, handleOpen, setInfo}) {
   const getRowId = (row) => row._id;
   const { deleteStock } = useStockRequest();
-  const { products } = useSelector((state) => state.stock)
+  const { purchases } = useSelector((state) => state.stock)
   const columns = [
-    { field: "_id", headerName: "ID", minWidht: 150, flex: 1.4 },
+    { field: "createdAt", headerName: "Date", minWidht: 150, flex: 1.4 },
     {
-      field: "categoryId",
-      headerName: "Category",
+      field: "firmId",
+      headerName: "Firm",
       width: 150,
       flex: 1,
       headerAlign: "center",
@@ -33,7 +34,7 @@ export default function ProductsData({open}) {
     },
     {
       field: "name",
-      headerName: "Name",
+      headerName: "Product",
       type: "text",
       minWidth: 110,
       flex: 1.1,
@@ -43,7 +44,25 @@ export default function ProductsData({open}) {
     },
     {
       field: "quantity",
-      headerName: "Stock",
+      headerName: "Qantity",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+      width: 160,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "price",
+      headerName: "Price",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+      width: 160,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "amount",
+      headerName: "Amount",
       description: "This column has a value getter and is not sortable.",
       sortable: false,
       width: 160,
@@ -57,8 +76,17 @@ export default function ProductsData({open}) {
       getActions: (props) => {
         return [
           <GridActionsCellItem
+            icon={<EditIcon />}
+            onClick={() => {
+                handleOpen()
+                setInfo(purchases)
+            }}
+            
+            label="Edit"
+          />,
+          <GridActionsCellItem
             icon={<DeleteIcon />}
-            onClick={() => deleteStock("products", props.id)}
+            onClick={() => deleteStock("purchases", props.id)}
             label="Delete"
           />,
         ];
@@ -72,7 +100,14 @@ export default function ProductsData({open}) {
         autoHeight
         getRowId={getRowId}
         columns={columns}
-        rows={products}
+        rows={purchases}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 5,
+            },
+          },
+        }}
         pageSizeOptions={[5,10,15,20,50,100]}
         checkboxSelection
         disableRowSelectionOnClick
