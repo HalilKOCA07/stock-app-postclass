@@ -6,17 +6,26 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import useStockRequest from "../services/useStockRequest";
 
-export default function PurchasesData({open, handleOpen, setInfo}) {
+export default function PurchasesData({
+  open,
+  info,
+  handleOpen,
+  setInfo,
+}) {
   const getRowId = (row) => row._id;
   const { deleteStock } = useStockRequest();
-  const { purchases } = useSelector((state) => state.stock)
-
-  
-   const columns = [
-    { field: "createdAt", headerName: "Date", minWidht: 150, flex: 1.4, valueGetter: (props) => {
-      const date = new Date(props);
-      return date.toLocaleString('tr-TR');
-     } },
+  const { purchases } = useSelector((state) => state.stock);
+  const columns = [
+    {
+      field: "createdAt",
+      headerName: "Date",
+      minWidht: 150,
+      flex: 1.4,
+      valueGetter: (props) => {
+        const date = new Date(props);
+        return date.toLocaleString("tr-TR");
+      },
+    },
     {
       field: "firmId",
       headerName: "Firm",
@@ -83,10 +92,15 @@ export default function PurchasesData({open, handleOpen, setInfo}) {
           <GridActionsCellItem
             icon={<EditIcon />}
             onClick={() => {
-                handleOpen()
-                setInfo(purchases)
+              handleOpen();
+              setInfo({
+                firmId: purchases.firmId,
+                brandId: purchases.brandId,
+                productId: purchases.productId,
+                quantity: purchases.quantity,
+                price: purchases.price,
+              });
             }}
-            
             label="Edit"
           />,
           <GridActionsCellItem
@@ -98,7 +112,6 @@ export default function PurchasesData({open, handleOpen, setInfo}) {
       },
     },
   ];
-
   return (
     <Box sx={{ width: "100%" }}>
       <DataGrid
@@ -106,7 +119,7 @@ export default function PurchasesData({open, handleOpen, setInfo}) {
         getRowId={getRowId}
         columns={columns}
         rows={purchases}
-        pageSizeOptions={[5,10,15,20,50,100]}
+        pageSizeOptions={[5, 10, 15, 20, 50, 100]}
         checkboxSelection
         disableRowSelectionOnClick
         slots={{ toolbar: GridToolbar }}

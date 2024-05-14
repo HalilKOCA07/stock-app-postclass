@@ -23,7 +23,7 @@ const style = {
 };
 
 export default function PurchasesModal({ open, handleClose, info, setInfo }) {
-  const { postStock } = useStockRequest();
+  const { postStock, putStock } = useStockRequest();
   const handleChange = (e) => {
     setInfo({ ...info, [e.target.name]: e.target.value });
   };
@@ -31,8 +31,12 @@ export default function PurchasesModal({ open, handleClose, info, setInfo }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(info._id){
+      putStock("purchases", info)
+    }else{
     postStock("purchases", info);
     handleClose();
+    }
   };
 
   return (

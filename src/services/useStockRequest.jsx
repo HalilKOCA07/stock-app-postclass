@@ -13,7 +13,6 @@ const useStockRequest = () => {
     dispatch(fetchStart());
     try {
       const { data } = await axiosToken.get(`${path}`);
-      console.log(data.data);
       const stockData = data.data;
       dispatch(getApiStockSuccess({ stockData, path }));
     } catch (error) {

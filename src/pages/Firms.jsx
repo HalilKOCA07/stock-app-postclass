@@ -4,7 +4,7 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import useStockRequest from "../services/useStockRequest";
 import FirmModal from "../components/FirmModal";
-import CardSkeleton, { ErrorMessage, LoadingSkeleton, WarningMessage } from "../components/DataMessage";
+import CardSkeleton, { ErrorMessage, WarningMessage } from "../components/DataMessage";
 
 const Firms = () => {
   const { firms } = useSelector((state) => state.stock);
