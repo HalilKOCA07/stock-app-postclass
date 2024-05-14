@@ -10,8 +10,13 @@ export default function PurchasesData({open, handleOpen, setInfo}) {
   const getRowId = (row) => row._id;
   const { deleteStock } = useStockRequest();
   const { purchases } = useSelector((state) => state.stock)
-  const columns = [
-    { field: "createdAt", headerName: "Date", minWidht: 150, flex: 1.4 },
+
+  
+   const columns = [
+    { field: "createdAt", headerName: "Date", minWidht: 150, flex: 1.4, valueGetter: (props) => {
+      const date = new Date(props);
+      return date.toLocaleString('tr-TR');
+     } },
     {
       field: "firmId",
       headerName: "Firm",
@@ -101,13 +106,6 @@ export default function PurchasesData({open, handleOpen, setInfo}) {
         getRowId={getRowId}
         columns={columns}
         rows={purchases}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-            },
-          },
-        }}
         pageSizeOptions={[5,10,15,20,50,100]}
         checkboxSelection
         disableRowSelectionOnClick
