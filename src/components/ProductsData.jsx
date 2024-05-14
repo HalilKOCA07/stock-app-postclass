@@ -5,12 +5,12 @@ import { useSelector } from "react-redux";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useStockRequest from "../services/useStockRequest";
 
-export default function ProductsData() {
+export default function ProductsData({open}) {
   const getRowId = (row) => row._id;
   const { deleteStock } = useStockRequest();
-  const {products} = useSelector((state) => state.stock)
-  console.log(products)
-
+  const { products } = useSelector((state) => state.stock)
+  const {categories} = useSelector((state) => state.stock)
+  const {brands} = useSelector((state) => state.stock)
   const columns = [
     { field: "_id", headerName: "ID", minWidht: 150, flex: 1.4 },
     {
@@ -21,7 +21,7 @@ export default function ProductsData() {
       headerAlign: "center",
       align: "center",
       editable: true,
-      valueGetter: (props) => props.row.categoryId?.name,
+      valueGetter: (props) => props?.name,
     },
     {
       field: "brandId",
@@ -31,7 +31,7 @@ export default function ProductsData() {
       headerAlign: "center",
       align: "center",
       editable: true,
-      valueGetter: (props) => props.row.brandId?.name,
+      valueGetter: (props) => props?.name,
     },
     {
       field: "name",
@@ -60,7 +60,7 @@ export default function ProductsData() {
         return [
           <GridActionsCellItem
             icon={<DeleteIcon />}
-            onClick={deleteStock("products", props.id)}
+            onClick={() => deleteStock("products", props.id)}
             label="Delete"
           />,
         ];

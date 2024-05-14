@@ -4,6 +4,9 @@ const initialState = {
   firms: [],
   brands:[],
   products:[],
+  categories:[],
+  purchases:[],
+  sales:[],
   loading: false,
   error: false,
 };

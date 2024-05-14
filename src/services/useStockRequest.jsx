@@ -1,8 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { fetchStart, getApiStockSuccess } from "../features/stockSlice";
+import { fetchStart, getApiStockSuccess,fetchFail } from "../features/stockSlice";
 import useAxios from "./useAxios";
-import { fetchFail } from "../features/authSlice";
 
 const useStockRequest = () => {
   const { axiosToken } = useAxios();
@@ -11,18 +10,6 @@ const useStockRequest = () => {
 
 
   const getStock = async (path = "firms") => {
-    dispatch(fetchStart());
-    try {
-      const { data } = await axiosToken.get(`${path}`);
-      console.log(data.data);
-      const stockData = data.data;
-      dispatch(getApiStockSuccess({ stockData, path }));
-    } catch (error) {
-      dispatch(fetchFail());
-      console.log(error);
-    }
-  };
-  const getProducts = async (path = "products") => {
     dispatch(fetchStart());
     try {
       const { data } = await axiosToken.get(`${path}`);
@@ -67,7 +54,7 @@ const useStockRequest = () => {
     }
   };
 
-  return { getStock, postStock, putStock, deleteStock, getProducts };
+  return { getStock, postStock, putStock, deleteStock };
 };
 
 export default useStockRequest;

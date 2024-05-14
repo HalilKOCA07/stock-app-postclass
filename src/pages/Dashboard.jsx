@@ -19,7 +19,6 @@ const drawerWidth = 240;
 
 function Dashboard(props) {
   const { user } = useSelector((state) => state.auth);
-  console.log(user);
   const { logout } = useApiRequest();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
