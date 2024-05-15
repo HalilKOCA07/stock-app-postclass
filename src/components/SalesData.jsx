@@ -6,15 +6,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import useStockRequest from "../services/useStockRequest";
 
-export default function PurchasesData({
+export default function SalesData({
   open,
   info,
   handleOpen,
   setInfo,
 }) {
+  const {sales} = useSelector((state) => state.stock)
   const getRowId = (row) => row._id;
   const { deleteStock } = useStockRequest();
-  const { purchases } = useSelector((state) => state.stock);
   const columns = [
     {
       field: "createdAt",
@@ -25,16 +25,6 @@ export default function PurchasesData({
         const date = new Date(props);
         return date.toLocaleString("tr-TR");
       },
-    },
-    {
-      field: "firmId",
-      headerName: "Firm",
-      width: 150,
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      editable: true,
-      valueGetter: (props) => props?.name,
     },
     {
       field: "brandId",
@@ -99,7 +89,7 @@ export default function PurchasesData({
           />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
-            onClick={() => deleteStock("purchases", props.id)}
+            onClick={() => deleteStock("sales", props.id)}
             label="Delete"
           />,
         ];
@@ -112,7 +102,7 @@ export default function PurchasesData({
         autoHeight
         getRowId={getRowId}
         columns={columns}
-        rows={purchases}
+        rows={sales}
         pageSizeOptions={[5, 10, 15, 20, 50, 100]}
         checkboxSelection
         disableRowSelectionOnClick

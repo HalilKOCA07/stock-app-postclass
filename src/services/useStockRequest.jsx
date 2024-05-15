@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { fetchStart, getApiStockSuccess,fetchFail } from "../features/stockSlice";
 import useAxios from "./useAxios";
+import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
 
 const useStockRequest = () => {
   const { axiosToken } = useAxios();
@@ -15,8 +16,10 @@ const useStockRequest = () => {
       const { data } = await axiosToken.get(`${path}`);
       const stockData = data.data;
       dispatch(getApiStockSuccess({ stockData, path }));
+      toastSuccessNotify(`Date of ${path} was taken`)
     } catch (error) {
       dispatch(fetchFail());
+      toastErrorNotify(`Date of ${path} could not be taken`)
       console.log(error);
     }
   };
@@ -26,8 +29,10 @@ const useStockRequest = () => {
     try {
       await axiosToken.post(`${path}`, infoFirm);
       getStock(path)
+      toastSuccessNotify(`Date of ${path} was taken`)
     } catch (error) {
       dispatch(fetchFail());
+      toastErrorNotify(`Date of ${path} could not be taken`)
       console.log(error);
     }
   };
@@ -47,8 +52,10 @@ const useStockRequest = () => {
     try {
       await axiosToken.delete(`${path}/${id}`);
       getStock(path)
+      toastSuccessNotify(`Date of ${path} was deleted`)
     } catch (error) {
       dispatch(fetchFail());
+      toastErrorNotify(`Date of ${path} could not be taken`)
       console.log(error);
     }
   };

@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import BrandsCard from "../components/BrandsCard";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
-import useBrandsRequest from "../services/useBrandsRequest";
+import useStockRequest from "../services/useStockRequest";
 import BrandsModal from "../components/BrandModal";
+import CardSkeleton, { WarningMessage } from "../components/DataMessage";
+import { ErrorMessage } from "formik";
 
 const Brands = () => {
-  const { brands } = useSelector((state) => state.stock);
-const {getBrands} = useBrandsRequest()
+  const { brands, loading, error } = useSelector((state) => state.stock);
+  const { getStock } = useStockRequest();
 
   const [info, setInfo] = useState({
     name: "",
@@ -25,7 +27,7 @@ const {getBrands} = useBrandsRequest()
   };
 
   useEffect(() => {
-    getBrands();
+    getStock("brands");
   }, []);
   return (
     <div>
@@ -35,7 +37,14 @@ const {getBrands} = useBrandsRequest()
       <Button variant="contained" onClick={handleOpen} sx={{ mt: 2, mb: 2 }}>
         NEW BRAND
       </Button>
-      <Box
+      <Box>
+        {loading && <CardSkeleton />}
+        {error && !loading && <ErrorMessage />}
+        {!brands.length && !loading && !error && (
+          <WarningMessage handleOpen={handleOpen} />
+        )}
+        {!brands.length && !loading && !error && (
+                <Box
         sx={{
           display: "flex",
           flexWrap: "wrap",
@@ -53,6 +62,10 @@ const {getBrands} = useBrandsRequest()
           </Grid>
         ))}
       </Box>
+        )}
+
+      </Box>
+
       <BrandsModal
         open={open}
         handleClose={handleClose}
