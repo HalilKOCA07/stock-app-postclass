@@ -15,12 +15,11 @@ const BrandsCard = ({ brand, handleOpen, setInfo }) => {
   return (
     <Card
       sx={{
-        maxWidth: 250,
+        maxWidth: 300,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "space-between",
-        width: "300px",
         height: "450px",
         p: 2,
       }}
@@ -30,7 +29,7 @@ const BrandsCard = ({ brand, handleOpen, setInfo }) => {
       </Typography>
       <CardMedia
         component="img"
-        sx={{ width: "200px", height:"150px"}}
+        sx={{ width: "250px"}}
         image={image}
         title={name}
       />

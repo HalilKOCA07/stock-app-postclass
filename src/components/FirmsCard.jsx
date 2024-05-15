@@ -31,7 +31,7 @@ const FirmsCard = ({ firm, handleOpen, setInfo }) => {
       </Typography>
       <CardMedia
         component="img"
-        sx={{ width: "200px", height:"150px"}}
+        sx={{ width: "200px"}}
         image={image}
         title={name}
       />

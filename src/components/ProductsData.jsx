@@ -8,7 +8,7 @@ import useStockRequest from "../services/useStockRequest";
 export default function ProductsData({open}) {
   const getRowId = (row) => row._id;
   const { deleteStock } = useStockRequest();
-  const { products } = useSelector((state) => state.stock)
+  const { products, purchases, sales } = useSelector((state) => state.stock)
   const columns = [
     { field: "_id", headerName: "ID", minWidht: 150, flex: 1.4 },
     {
@@ -42,11 +42,29 @@ export default function ProductsData({open}) {
       editable: true,
     },
     {
+      field: "purchases",
+      headerName: "Purchases",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+      width: 100,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "sales",
+      headerName: "Sales",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+      width: 100,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
       field: "quantity",
       headerName: "Stock",
       description: "This column has a value getter and is not sortable.",
       sortable: false,
-      width: 160,
+      width: 100,
       headerAlign: "center",
       align: "center",
     },

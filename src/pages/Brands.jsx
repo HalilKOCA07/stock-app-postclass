@@ -43,7 +43,7 @@ const Brands = () => {
         {!brands.length && !loading && !error && (
           <WarningMessage handleOpen={handleOpen} />
         )}
-        {!brands.length && !loading && !error && (
+        {brands.length && !loading && !error && (
                 <Box
         sx={{
           display: "flex",
