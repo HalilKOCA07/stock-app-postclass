@@ -5,12 +5,12 @@ import CardActions from "@mui/material/CardActions";
 import CardMedia from "@mui/material/CardMedia";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import useBrandsRequest from "../services/useBrandsRequest";
+import useStockRequest from "../services/useStockRequest";
 
 const BrandsCard = ({ brand, handleOpen, setInfo }) => {
   const { name, _id, image } = brand;
 
-  const {deleteBrand} = useBrandsRequest()
+  const {deleteStock} = useStockRequest()
 
   return (
     <Card
@@ -35,7 +35,7 @@ const BrandsCard = ({ brand, handleOpen, setInfo }) => {
         title={name}
       />
       <CardActions>
-        <DeleteIcon sx={{ color: "red" }} onClick={() => deleteBrand("brands", _id)}/>
+        <DeleteIcon sx={{ color: "red" }} onClick={() => deleteStock("brands", _id)}/>
         <EditIcon
           onClick={() => {
             handleOpen();

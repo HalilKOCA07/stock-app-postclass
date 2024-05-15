@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import useBrandsRequest from "../services/useBrandsRequest"
+import useStockRequest from "../services/useStockRequest"
 import { TextField } from "@mui/material";
 
 const style = {
@@ -19,7 +19,7 @@ const style = {
 };
 
 export default function BrandsModal({ open, handleClose, info, setInfo }) {
-  const { putBrand, postBrands } = useBrandsRequest();
+  const { putStock, postStock } = useStockRequest();
   const handleChange = (e) => {
     setInfo({ ...info, [e.target.name]: e.target.value });
     console.log(info);
@@ -28,9 +28,9 @@ export default function BrandsModal({ open, handleClose, info, setInfo }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (info._id) {
-      putBrand("brands", info);
+      putStock("brands", info);
     } else {
-      postBrands("brands", info);
+      postStock("brands", info);
     }
     handleClose();
   };

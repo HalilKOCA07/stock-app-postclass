@@ -13,6 +13,7 @@ import SalesModal from "../components/SalesModal";
 const Products = () => {
   const { getStock } = useStockRequest();
   const { sales, loading, error } = useSelector((state) => state.stock);
+  console.log("Error:", error)
   const [info, setInfo] = useState({
     brandId: "",
     productId: "",
@@ -40,7 +41,7 @@ const Products = () => {
       <Typography variant="h4" sx={{ color: "red", fontSize: 25 }}>
         SALES
       </Typography>
-      {sales.length > 0 && (
+      {sales.length > 0 && !error && (
         <Button
           variant="contained"
           onClick={() => handleOpen()}
