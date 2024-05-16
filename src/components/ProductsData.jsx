@@ -5,10 +5,11 @@ import { useSelector } from "react-redux";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useStockRequest from "../services/useStockRequest";
 
-export default function ProductsData({open}) {
+export default function ProductsData({ open }) {
   const getRowId = (row) => row._id;
   const { deleteStock } = useStockRequest();
-  const { products, purchases, sales } = useSelector((state) => state.stock)
+  const { products, purchases, sales } = useSelector((state) => state.stock);
+  console.log(purchases)
   const columns = [
     { field: "_id", headerName: "ID", minWidht: 150, flex: 1.4 },
     {
@@ -41,24 +42,28 @@ export default function ProductsData({open}) {
       align: "center",
       editable: true,
     },
-    {
-      field: "purchases",
-      headerName: "Purchases",
-      description: "This column has a value getter and is not sortable.",
-      sortable: false,
-      width: 100,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "sales",
-      headerName: "Sales",
-      description: "This column has a value getter and is not sortable.",
-      sortable: false,
-      width: 100,
-      headerAlign: "center",
-      align: "center",
-    },
+    // {
+    //   field: "purchases",
+    //   headerName: "purchases",
+    //   description: "This column has a value getter and is not sortable.",
+    //   sortable: false,
+    //   width: 100,
+    //   headerAlign: "center",
+    //   align: "center",
+    //   valueGetter: (params) => {
+    //     const purchases = params?.row?.quantity || [];
+    //     return purchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
+    //   },
+    // },
+    // {
+    //   field: "sales",
+    //   headerName: "Sales",
+    //   description: "This column has a value getter and is not sortable.",
+    //   sortable: false,
+    //   width: 100,
+    //   headerAlign: "center",
+    //   align: "center",
+    // },
     {
       field: "quantity",
       headerName: "Stock",
@@ -91,7 +96,7 @@ export default function ProductsData({open}) {
         getRowId={getRowId}
         columns={columns}
         rows={products}
-        pageSizeOptions={[5,10,15,20,50,100]}
+        pageSizeOptions={[5, 10, 15, 20, 50, 100]}
         checkboxSelection
         disableRowSelectionOnClick
         slots={{ toolbar: GridToolbar }}

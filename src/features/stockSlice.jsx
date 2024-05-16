@@ -2,11 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   firms: [],
-  brands:[],
-  products:[],
-  categories:[],
-  purchases:[],
-  sales:[],
+  brands: [],
+  products: [],
+  categories: [],
+  purchases: [],
+  sales: [],
+  stock: [],
   loading: false,
   error: false,
 };
@@ -21,7 +22,32 @@ const stockSlice = createSlice({
     },
     getApiStockSuccess: (state, { payload: { path, stockData } }) => {
       state.loading = false;
-      state[path] = stockData;
+      if (path === "products") {
+        // product page içinde alış ve satış bilgilerini ekleme
+        const ubdateProduct = stockData.map((product) => {
+          const purchasesProduct = state.purchases.filter(
+            (purchase) => purchase.productId === product._id
+          );
+          const salesProduct = state.sales.filter(
+            (sale) => sale.productId === product._id
+          );
+          return {
+            ...product,
+            purchases: purchasesProduct,
+            sales: salesProduct,
+            stock:
+              purchasesProduct.reduce(
+                (sum, purchase) => sum + purchase.amount,
+                0
+              ) - salesProduct.reduce((sum, sale) => sum + sale.amount, 0),
+          };
+         
+        });
+        state[path] = ubdateProduct;
+      } else {
+        state[path] = stockData;
+      }
+      
     },
     fetchFail: (state) => {
       state.loading = false;

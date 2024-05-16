@@ -30,6 +30,8 @@ const Products = () => {
     getStock("products");
     getStock("categories");
     getStock("brands");
+    getStock("purchases");
+    getStock("sales");
   }, []);
   return (
     <div>
