@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import React, { useState } from 'react';
 import ReactApexChart from "react-apexcharts"
 import { useSelector } from 'react-redux';
@@ -22,7 +23,7 @@ let salesDates = []
   }
 getSalesAndPurchasesData()
 console.log(salesDates)
-  const [state, setState] = useState(
+  const state = 
 {    series: [{
       name: "Desktops",
       data: salesData,
@@ -55,12 +56,12 @@ console.log(salesDates)
       categories: salesDates,
     }
   },}
-  )
+  
 
       return (
-        <div>
+        <Box sx={{mt:5}}>
           <ReactApexChart options={state.options} series={state.series} type="line" width={500} height={350} />
-        </div>
+        </Box>
       );
     }
   

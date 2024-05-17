@@ -52,7 +52,7 @@ const ShoppingPriceData = () => {
                 color="text.secondary"
                 gutterBottom
               >
-                ${salesPrice.toFixed(2)}
+                ${salesPrice.toLocaleString("tr-TR")}
               </Typography>
             </Box>
           </CardContent>
@@ -77,7 +77,7 @@ const ShoppingPriceData = () => {
                 color="text.secondary"
                 gutterBottom
               >
-                ${porfitPrice.toFixed(2)}
+                ${porfitPrice.toLocaleString("tr-TR")}
               </Typography>
             </Box>
           </CardContent>
@@ -101,7 +101,7 @@ const ShoppingPriceData = () => {
                 color="text.secondary"
                 gutterBottom
               >
-                ${purchasesPrice.toFixed(2)}
+                ${purchasesPrice.toLocaleString("tr-TR")}
               </Typography>
             </Box>
           </CardContent>
