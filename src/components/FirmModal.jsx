@@ -1,9 +1,10 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import Button from "@mui/material/Button";
 import useStockRequest from "../services/useStockRequest";
+import FormControl from "@mui/material/FormControl";
+import { useNavigate } from "react-router-dom";
 import { TextField } from "@mui/material";
 
 const style = {
@@ -15,25 +16,32 @@ const style = {
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
+  pt: 2,
+  px: 4,
+  pb: 3,
 };
 
-export default function FirmModal({ open, handleClose, info, setInfo }) {
-  const { putStock, postStock } = useStockRequest();
+export default function FirmModal({open, handleClose, setInfoFirm, infoFirm }) {
+  const { postStock, putStock } = useStockRequest();
+
   const handleChange = (e) => {
-    setInfo({ ...info, [e.target.name]: e.target.value });
-    console.log(info);
+    const { name, value } = e.target;
+    setInfoFirm({ ...infoFirm, [name]: value });
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (info._id) {
-      putStock("firms", info);
-    } else {
-      postStock("firms", info);
+    e.preventDefault()
+
+    if(infoFirm._id){
+        putStock("firms", infoFirm)
+    }else{
+       postStock("firms", infoFirm)
     }
-    handleClose();
+   
+    handleClose()
   };
+
+  console.log(infoFirm);
 
   return (
     <div>
@@ -44,58 +52,72 @@ export default function FirmModal({ open, handleClose, info, setInfo }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Box
-            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-            component={"form"}
-            onSubmit={handleSubmit}
-          >
+
+          <FormControl fullWidth>
             <TextField
               label="Firm Name"
-              name="name"
               id="name"
-              type="text"
+              name="name"
+              inputProps={{ min: 0 }}
+              sx={{ mt: 2 }}
               variant="outlined"
-              value={info.name}
+              value={infoFirm?.name}
               onChange={handleChange}
               required
             />
-
+          </FormControl>
+          <FormControl fullWidth>
             <TextField
               label="Phone"
-              name="phone"
               id="phone"
-              type="tel"
+              name="phone"
+              inputProps={{ min: 0 }}
+              sx={{ mt: 2 }}
               variant="outlined"
-              value={info.phone}
+              value={infoFirm?.phone}
               onChange={handleChange}
               required
             />
-
+          </FormControl>
+          <FormControl fullWidth>
             <TextField
-              label="address"
-              name="address"
+              label="Address"
               id="address"
-              type="text"
+              name="address"
+              inputProps={{ min: 0 }}
+              sx={{ mt: 2 }}
               variant="outlined"
-              value={info.address}
+              value={infoFirm?.address}
               onChange={handleChange}
               required
             />
-
+          </FormControl>
+          <FormControl fullWidth>
             <TextField
               label="Image"
-              name="image"
               id="image"
-              type="url"
+              name="image"
+              inputProps={{ min: 0 }}
+              sx={{ mt: 2 }}
               variant="outlined"
-              value={info.image}
+              value={infoFirm?.image}
               onChange={handleChange}
               required
             />
-            <Button variant="contained" type="submit">
-              {info._id ? "UPDATE FIRM" : "ADD FIRM"}
+          </FormControl>
+          <FormControl fullWidth>
+            <Button
+              sx={{
+                backgroundColor: "black",
+                color: "white",
+                m: 3,
+                ":hover": { backgroundColor: "#020265" },
+              }}
+              onClick={handleSubmit}
+            >
+              {infoFirm?._id ? "Edit Firm" : "New Add Firm"}
             </Button>
-          </Box>
+          </FormControl>
         </Box>
       </Modal>
     </div>

@@ -1,9 +1,9 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import useStockRequest from "../services/useStockRequest"
+import Button from "@mui/material/Button";
+import useStockRequest from "../services/useStockRequest";
+import FormControl from "@mui/material/FormControl";
 import { TextField } from "@mui/material";
 
 const style = {
@@ -15,24 +15,29 @@ const style = {
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
+  pt: 2,
+  px: 4,
+  pb: 3,
 };
 
-export default function BrandsModal({ open, handleClose, info, setInfo }) {
-  const { putStock, postStock } = useStockRequest();
+export default function BrandModal({open, handleClose, setInfoBrand, infoBrand }) {
+  const { postStock, putStock } = useStockRequest();
+
   const handleChange = (e) => {
-    setInfo({ ...info, [e.target.name]: e.target.value });
-    console.log(info);
+    const { name, value } = e.target;
+    setInfoBrand({ ...infoBrand, [name]: value });
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (info._id) {
-      putStock("brands", info);
-    } else {
-      postStock("brands", info);
+    e.preventDefault()
+
+    if(infoBrand._id){
+        putStock("brands", infoBrand)
+    }else{
+       postStock("brands", infoBrand)
     }
-    handleClose();
+   
+    handleClose()
   };
 
   return (
@@ -44,36 +49,46 @@ export default function BrandsModal({ open, handleClose, info, setInfo }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Box
-            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-            component={"form"}
-            onSubmit={handleSubmit}
-          >
+
+          <FormControl fullWidth>
             <TextField
-              label="Firm Name"
-              name="name"
+              label="Brand Name"
               id="name"
-              type="text"
+              name="name"
+              inputProps={{ min: 0 }}
+              sx={{ mt: 2 }}
               variant="outlined"
-              value={info.name}
+              value={infoBrand?.name}
               onChange={handleChange}
               required
             />
-
+          </FormControl>
+          <FormControl fullWidth>
             <TextField
               label="Image"
-              name="image"
               id="image"
-              type="url"
+              name="image"
+              inputProps={{ min: 0 }}
+              sx={{ mt: 2 }}
               variant="outlined"
-              value={info.image}
+              value={infoBrand?.image}
               onChange={handleChange}
               required
             />
-            <Button variant="contained" type="submit">
-              {info._id ? "UPDATE FIRM" : "ADD FIRM"}
+          </FormControl>
+          <FormControl fullWidth>
+            <Button
+              sx={{
+                backgroundColor: "black",
+                color: "white",
+                m: 3,
+                ":hover": { backgroundColor: "#020265" },
+              }}
+              onClick={handleSubmit}
+            >
+              {infoBrand?._id ? "Edit Brand" : "New Add Brand"}
             </Button>
-          </Box>
+          </FormControl>
         </Box>
       </Modal>
     </div>

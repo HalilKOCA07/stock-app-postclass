@@ -1,78 +1,47 @@
-import { Box, Button, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import useStockRequest from "../services/useStockRequest";
+import { useState, useEffect } from "react";
+import SalesTable from "../components/salesTable";
 import { useSelector } from "react-redux";
-import {
-  ErrorMessage,
-  LoadingSkeleton,
-  WarningMessage,
-} from "../components/DataMessage";
-import SalesData from "../components/SalesData";
-import SalesModal from "../components/SalesModal";
+import useStockRequest from "../services/useStockRequest";
+import { Button, Typography } from "@mui/material";
+import { newAddingBtnStyle, pageHeaderStyle } from "../styles/globalStyles";
+import SalesModal from "../components/salesModal";
 
-const Products = () => {
+const Sales = () => {
+  const { sales } = useSelector((state) => state.stock);
   const { getStock } = useStockRequest();
-  const { sales, loading, error } = useSelector((state) => state.stock);
-  console.log("Error:", error)
-  const [info, setInfo] = useState({
+
+  const initialState = {
     brandId: "",
     productId: "",
     quantity: "",
     price: "",
-  });
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  };
+
+  const [infoSales, setInfoSales] = useState(initialState);
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
   const handleClose = () => {
     setOpen(false);
-    setInfo({
-      brandId: "",
-      productId: "",
-      quantity: "",
-      price: "",
-    });
+    setInfoSales(initialState);
   };
+
   useEffect(() => {
     getStock("sales");
-    getStock("brands");
-    getStock("products");
   }, []);
+
   return (
     <div>
-      <Typography variant="h4" sx={{ color: "red", fontSize: 25 }}>
-        SALES
-      </Typography>
-      {sales.length > 0 && !error && (
-        <Button
-          variant="contained"
-          onClick={() => handleOpen()}
-          sx={{ mt: 2, mb: 2 }}
-        >
-          NEW SALES
-        </Button>
-      )}
-      <Box>
-        {loading && <LoadingSkeleton />}
-        {error && !loading && <ErrorMessage />}
-        {!sales.length && !loading && !error && (
-          <WarningMessage handleOpen={handleOpen} />
-        )}
-        {!loading && !error && sales.length > 0 && (
-          <SalesData
-            info={info}
-            handleOpen={handleOpen}
-            setInfo={setInfo}
-          />
-        )}
-      </Box>
-      <SalesModal
-        open={open}
-        info={info}
-        setInfo={setInfo}
-        handleClose={handleClose}
-        handleOpen={handleOpen}
-      />
+      <Typography sx={pageHeaderStyle}>SALES</Typography>
+      <Button sx={newAddingBtnStyle} onClick={handleOpen}>
+        NEW SALES
+      </Button>
+      <SalesTable handleOpen={handleOpen} open={open} sales={sales} setInfoSales={setInfoSales} />
+      <SalesModal setInfoSales={setInfoSales} infoSales={infoSales} handleClose={handleClose} open={open}/>
     </div>
   );
 };
 
-export default Products;
+export default Sales;

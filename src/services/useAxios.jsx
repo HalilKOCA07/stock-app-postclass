@@ -1,19 +1,19 @@
-import { create } from "@mui/material/styles/createTransitions";
-import axios from "axios";
-import { useSelector } from "react-redux";
+import axios from "axios"
+import { useSelector } from "react-redux"
 
 const useAxios = () => {
-  const { token } = useSelector((state) => state.auth);
 
-  const axiosToken = axios.create({
-    baseURL: `${process.env.REACT_APP_BASE_URL}`,
-    headers: { Authorization: `Token ${token}` },
-  });
+  const {token} = useSelector((state) => state.auth)
 
-  const axiosPublic = axios.create({
-    baseURL: `${process.env.REACT_APP_BASE_URL}`,
-  });
-  return {axiosToken, axiosPublic};
-};
+    const axiosToken = axios.create({
+        baseURL: `${process.env.REACT_APP_BASE_URL}`,
+        headers: {Authorization: `Token ${token}`},
+    })
 
-export default useAxios;
+    const axiosPublic = axios.create({
+        baseURL:`${process.env.REACT_APP_BASE_URL}`
+    })
+  return {axiosPublic, axiosToken}
+}
+
+export default useAxios

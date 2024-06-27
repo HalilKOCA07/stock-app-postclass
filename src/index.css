@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+}
+
+/* TABLE STYLE */
+.MuiDataGrid-toolbarContainer{
+    background-color: #c9c9c9;
+}
+.css-yrdy0g-MuiDataGrid-columnHeaderRow{
+    background-color:#dbdbdb !important; 
+    color: blue;
+}
+
+.MuiDataGrid-filler{
+    display: none;
+}
+/* TABLE STYLE */
+
+/* ****** CARD STYLE****** */
+/* IMAGE */
+.MuiCardMedia-root{
+    width: 60% !important;
+    margin: auto;
+}

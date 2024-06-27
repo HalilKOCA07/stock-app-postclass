@@ -1,29 +1,30 @@
+import { Box, Button, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import BrandsCard from "../components/BrandsCard";
-import { Box, Button, Grid, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
+import {
+  cardStyle,
+  newAddingBtnStyle,
+  pageHeaderStyle,
+} from "../styles/globalStyles";
 import useStockRequest from "../services/useStockRequest";
-import BrandsModal from "../components/BrandModal";
-import CardSkeleton, { WarningMessage } from "../components/DataMessage";
-import { ErrorMessage } from "formik";
+import { useSelector } from "react-redux";
+import BrandCard from "../components/BrandCard";
+import BrandModal from "../components/BrandModal";
 
 const Brands = () => {
-  const { brands, loading, error } = useSelector((state) => state.stock);
   const { getStock } = useStockRequest();
-
-  const [info, setInfo] = useState({
+  const { brands } = useSelector((state) => state.stock);
+  const [open, setOpen] = useState(false);
+  const initialState = {
     name: "",
     image: "",
-  });
+  };
 
-  const [open, setOpen] = React.useState(false);
+  const [infoBrand, setInfoBrand] = useState(initialState);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    setInfo({
-      name: "",
-      image: "",
-    });
+    setInfoBrand(initialState);
   };
 
   useEffect(() => {
@@ -31,46 +32,31 @@ const Brands = () => {
   }, []);
   return (
     <div>
-      <Typography variant="h4" sx={{ color: "red", fontSize: 25 }}>
-        BRANDS
-      </Typography>
-      <Button variant="contained" onClick={handleOpen} sx={{ mt: 2, mb: 2 }}>
-        NEW BRAND
+      <Typography sx={pageHeaderStyle}>BRANDS</Typography>
+      <Button sx={newAddingBtnStyle} onClick={handleOpen}>
+        New Add Brand
       </Button>
-      <Box>
-        {loading && <CardSkeleton />}
-        {error && !loading && <ErrorMessage />}
-        {!brands.length && !loading && !error && (
-          <WarningMessage handleOpen={handleOpen} />
-        )}
-        {brands.length && !loading && !error && (
-                <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 2,
-          justifyContent: "center",
-        }}
+      <Stack
+        sx={cardStyle}
+        useFlexGap
+        direction={"row"}
+        spacing={{ xs: 1, sm: 2, md: 3 }}
       >
         {brands.map((brand) => (
-          <Grid item key={brand._id} xs={12} sm={6} md={4}>
-            <BrandsCard
+          <Box key={brand?._id} sx={{}}>
+            <BrandCard
               brand={brand}
               handleOpen={handleOpen}
-              setInfo={setInfo}
+              setInfoBrand={setInfoBrand}
             />
-          </Grid>
+          </Box>
         ))}
-      </Box>
-        )}
-
-      </Box>
-
-      <BrandsModal
+      </Stack>
+      <BrandModal
         open={open}
         handleClose={handleClose}
-        setInfo={setInfo}
-        info={info}
+        setInfoBrand={setInfoBrand}
+        infoBrand={infoBrand}
       />
     </div>
   );

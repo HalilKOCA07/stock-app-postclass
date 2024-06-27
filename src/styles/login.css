@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+NG+Modern:wght@100..400&display=swap');
+
+body{
+    background-color: #daf1f5;
+}
+.headLogin {
+    font-family: "Playwrite NG Modern" !important;
+    font-optical-sizing: auto;
+    font-weight: weight;
+    font-style: normal;
+  }
+
+.headCarImg{
+    display: none
+}
+
+@media only screen and (min-width: 600px) {
+    .headCarImg{width: 150px; display: inline;}
+    .title{width: 250px;}
+}
+@media only screen and (min-width: 900px) {
+    .headCarImg{width: 250px; display: inline;}
+    .title{width: 350px;}
+}
+
+
+

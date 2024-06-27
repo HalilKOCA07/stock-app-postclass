@@ -1,66 +1,65 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import { fetchStart, getApiStockSuccess,fetchFail } from "../features/stockSlice";
-import useAxios from "./useAxios";
-import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchFail, fetchStart } from '../feature/authSlice'
+import { toastSuccessNotify, toastErrorNotify } from '../helper/ToastNotify'
+import useAxios from './useAxios'
+import { getStockSuccess } from '../feature/stockSlice'
+
 
 const useStockRequest = () => {
-  const { axiosToken } = useAxios();
-  const dispatch = useDispatch();
+    const dispatch = useDispatch()
+    const {axiosToken} = useAxios()
 
-
-
-  const getStock = async (path = "firms") => {
-    dispatch(fetchStart());
-    try {
-      const { data } = await axiosToken.get(`${path}`);
-      const stockData = data.data;
-      dispatch(getApiStockSuccess({ stockData, path }));
-      toastSuccessNotify(`Date of ${path} was taken`)
-    } catch (error) {
-      dispatch(fetchFail());
-      toastErrorNotify(`Date of ${path} could not be taken`)
-      console.log(error);
+    const getStock = async(path = "firms") => {
+        dispatch(fetchStart())
+        try{
+            const {data} = await axiosToken(`/${path}`)
+            const stockData = data.data
+            dispatch(getStockSuccess({path, stockData}))
+        }catch(error){
+            toastErrorNotify(`${path} couldn't be received`)
+            dispatch(fetchFail())
+        } 
     }
-  };
-
-  const postStock = async (path = "firms", infoFirm) => {
-    dispatch(fetchStart());
-    try {
-      await axiosToken.post(`${path}`, infoFirm);
-      getStock(path)
-      toastSuccessNotify(`Date of ${path} was taken`)
-    } catch (error) {
-      dispatch(fetchFail());
-      toastErrorNotify(`Date of ${path} could not be taken`)
-      console.log(error);
+    
+    const postStock = async(path = "firms", info) => {
+        dispatch(fetchStart())
+        try{
+            const {data} = await axiosToken.post(`/${path}`, info)
+            const stockData = data.data
+            toastSuccessNotify(`New ${path} is successfully added`)
+            getStock(path)
+        }catch(error){
+            toastErrorNotify(`${path} couldn't be received`)
+            dispatch(fetchFail())
+        } 
     }
-  };
 
-  const putStock = async (path = "firms", infoFirm) => {
-    dispatch(fetchStart());
-    try {
-      await axiosToken.put(`${path}/${infoFirm._id}`, infoFirm);
-      getStock(path)
-    } catch (error) {
-      dispatch(fetchFail());
-      console.log(error);
+    const putStock = async(path = "firms", info) => {
+        dispatch(fetchStart())
+        try{
+            const {data} = await axiosToken.put(`/${path}/${info._id}`, info)
+            const stockData = data.data
+            toastSuccessNotify(`New ${path} is successfully ubdated`)
+           getStock(path)
+        }catch(error){
+            toastErrorNotify(`${path} couldn't be received`)
+            dispatch(fetchFail())
+        } 
     }
-  };
-  const deleteStock = async (path = "firms", id) => {
-    dispatch(fetchStart());
-    try {
-      await axiosToken.delete(`${path}/${id}`);
-      getStock(path)
-      toastSuccessNotify(`Date of ${path} was deleted`)
-    } catch (error) {
-      dispatch(fetchFail());
-      toastErrorNotify(`Date of ${path} could not be taken`)
-      console.log(error);
+
+    const deleteApi = async(path, id) => {
+        dispatch(fetchStart())
+        try{
+            await axiosToken.delete(`/${path}/${id}`)
+            toastSuccessNotify("purchases succsesfully is deleted")
+            getStock(path)
+        }catch(error){
+            toastErrorNotify(`${path} couldn't be received`)
+            dispatch(fetchFail())
+        } 
     }
-  };
 
-  return { getStock, postStock, putStock, deleteStock };
-};
+  return {getStock, deleteApi, postStock, putStock}
+}
 
-export default useStockRequest;
+export default useStockRequest

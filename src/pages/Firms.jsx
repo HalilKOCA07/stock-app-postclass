@@ -1,80 +1,66 @@
+import { Box, Button, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import FirmsCard from "../components/FirmsCard";
-import { Box, Button, Grid, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
+import {
+  cardStyle,
+  newAddingBtnStyle,
+  pageHeaderStyle,
+} from "../styles/globalStyles";
+import FirmCard from "../components/FirmCard";
 import useStockRequest from "../services/useStockRequest";
+import { useSelector } from "react-redux";
 import FirmModal from "../components/FirmModal";
-import CardSkeleton, { ErrorMessage, WarningMessage } from "../components/DataMessage";
 
 const Firms = () => {
-  const { firms } = useSelector((state) => state.stock);
   const { getStock } = useStockRequest();
-  const {loading, error} = useSelector((state) => state.stock)
+  const { firms } = useSelector((state) => state.stock);
 
-  const [info, setInfo] = useState({
+  const [open, setOpen] = useState(false);
+  const initialState = {
     name: "",
     phone: "",
-    address: "",
     image: "",
-  });
+    address: "",
+  };
 
-  const [open, setOpen] = React.useState(false);
+  const [infoFirm, setInfoFirm] = useState(initialState);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    setInfo({
-      name: "",
-      phone: "",
-      image: "",
-      address: "",
-    });
+    setInfoFirm(initialState);
   };
 
   useEffect(() => {
-    getStock();
+    getStock("firms");
   }, []);
   return (
     <div>
-      <Typography variant="h4" sx={{ color: "red", fontSize: 25 }}>
-        FIRMS
-      </Typography>
-      <Button variant="contained" onClick={handleOpen} sx={{ mt: 2, mb: 2 }}>
-        NEW FIRMS
+      <Typography sx={pageHeaderStyle}>FIRMS</Typography>
+      <Button sx={newAddingBtnStyle} onClick={handleOpen}>
+        New Add Firm
       </Button>
-
-      <Box>
-        {loading && <CardSkeleton />}
-        {error && !loading && <ErrorMessage />}
-        {!firms.length && !loading && !error && (
-          <WarningMessage handleOpen={handleOpen} />
-        )}
-        {!loading && !error && firms.length > 0 && (
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 2,
-              justifyContent: "center",
-            }}
-          >
-            {firms.map((firm) => (
-              <Grid item key={firm._id} xs={12} sm={6} md={4}>
-                <FirmsCard
-                  firm={firm}
-                  handleOpen={handleOpen}
-                  setInfo={setInfo}
-                />
-              </Grid>
-            ))}
+      <Stack
+        sx={cardStyle}
+        useFlexGap
+        direction={"row"}
+        spacing={{ xs: 1, sm: 2, md: 3 }}
+      >
+        {firms.map((firm) => (
+          <Box key={firm?._id} sx={{}}>
+            <FirmCard
+              firm={firm}
+              handleOpen={handleOpen}
+              setInfoFirm={setInfoFirm}
+            />
           </Box>
-        )}
-      </Box>
-
+        ))}
+      </Stack>
       <FirmModal
         open={open}
         handleClose={handleClose}
-        setInfo={setInfo}
-        info={info}
+        setInfoFirm={setInfoFirm}
+        infoFirm={infoFirm}
+        firms={firms}
       />
     </div>
   );

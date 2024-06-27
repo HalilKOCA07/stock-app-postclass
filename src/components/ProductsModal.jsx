@@ -1,14 +1,16 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
+import Button from "@mui/material/Button";
+import { useEffect } from "react";
 import useStockRequest from "../services/useStockRequest";
-import { TextField } from "@mui/material";
+import { useSelector } from "react-redux";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -19,22 +21,38 @@ const style = {
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
+  pt: 2,
+  px: 4,
+  pb: 3,
 };
 
-export default function ProductsModal({ open, handleClose, info, setInfo }) {
-  const { postStock } = useStockRequest();
+export default function ProductsModal({ open, handleClose, setInfo, info }) {
+  const { getStock, postStock, putStock } = useStockRequest();
+  const navigate = useNavigate();
+  const { categories, brands } = useSelector((state) => state.stock);
   const handleChange = (e) => {
-    setInfo({ ...info, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setInfo({ ...info, [name]: value });
   };
-  const { brands, categories } = useSelector((state) => state.stock);
-
+console.log(open)
   const handleSubmit = (e) => {
-    e.preventDefault();
-    postStock("products", info);
-    handleClose();
+    e.preventDefault()
+
+    if(info._id){
+        putStock("products", info)
+    }else{
+       postStock("products", info)
+    }
+   
+    handleClose()
   };
 
+  console.log(info);
+
+  useEffect(() => {
+    getStock("categories");
+    getStock("brands");
+  }, []);
   return (
     <div>
       <Modal
@@ -44,62 +62,94 @@ export default function ProductsModal({ open, handleClose, info, setInfo }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Box
-            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-            component={"form"}
-            onSubmit={handleSubmit}
-          >
-            <FormControl fullWidth>
-            <InputLabel id="categoryId">Categories</InputLabel>
-              <Select
-                label="Categories"
-                labelId="categoryId"
-                id="categoryId"
-                name="categoryId"
-                value={info.categoryId}
-                onChange={handleChange}
-                required
+          {/* *************** FIRMS ***************** */}
+          <FormControl fullWidth>
+            <InputLabel id="categories-select-label">categories</InputLabel>
+            <Select
+              labelId="categories-select-label"
+              value={info?.categoryId?._id || info?.categoryId}
+              name="categoryId"
+              label="Category"
+              onChange={handleChange}
+              required
+            >
+              <MenuItem
+                sx={{
+                  backgroundColor: "#dbdbdb",
+                  display: "flex",
+                  justifyContent: "center",
+                  fontWeight: "bold",
+                }}
+                onClick={() => navigate("/stock/firms")}
               >
-                {categories.map((item) => (
-                  <MenuItem key={item._id} value={item._id}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl fullWidth>
-            <InputLabel id="brandId">Brands</InputLabel>
-              <Select
-                label="brands"
-                labelId="brandId"
-                id="brandId"
-                name="brandId"
-                value={info.brandId}
-                onChange={handleChange}
-                required
-              >
-                {brands.map((item) => (
-                  <MenuItem key={item._id} value={item._id}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+                Add New Category
+              </MenuItem>
+              <hr />
+              {categories.map((item) => (
+                <MenuItem key={item._id} value={item._id}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
+          {/* *************** BRANDS ***************** */}
+          <FormControl fullWidth sx={{ mt: 2, mb: 2 }}>
+            <InputLabel id="brand-select-label">Brand</InputLabel>
+            <Select
+              labelId="brand-select-label"
+              value={info?.brandId?._id || info?.brandId}
+              name="brandId"
+              label="Brand"
+              onChange={handleChange}
+              required
+            >
+              <MenuItem
+                sx={{
+                  backgroundColor: "#dbdbdb",
+                  display: "flex",
+                  justifyContent: "center",
+                  fontWeight: "bold",
+                }}
+                onClick={() => navigate("/stock/brands")}
+              >
+                Add New Brands
+              </MenuItem>
+              <hr />
+              {brands.map((item) => (
+                <MenuItem key={item._id} value={item._id}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl fullWidth>
             <TextField
-              label="name"
-              name="name"
+              label="Name"
               id="name"
-              type="text"
+              name="name"
+              inputProps={{ min: 0 }}
+              sx={{ mt: 2 }}
               variant="outlined"
-              value={info.name}
+              value={info?.name}
               onChange={handleChange}
               required
             />
-            <Button variant="contained" type="submit">
-              ADD PRODUCTS
+          </FormControl>
+          <FormControl fullWidth>
+            <Button
+              sx={{
+                backgroundColor: "black",
+                color: "white",
+                m: 3,
+                ":hover": { backgroundColor: "#020265" },
+              }}
+              onClick={handleSubmit}
+            >
+              {info?._id ? "Edit Product" : "New Add Product"}
             </Button>
-          </Box>
+          </FormControl>
         </Box>
       </Modal>
     </div>
