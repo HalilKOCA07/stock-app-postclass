@@ -88,4 +88,4 @@ SOLUTION
 
 ## Uygulamanın Canlı Ornegi:
 
-https://stock-app-tr.vercel.app/
+https://stock-app-postclass.vercel.app/
