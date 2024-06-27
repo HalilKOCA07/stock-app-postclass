@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import useStockRequest from "../services/useStockRequest";
 import { Button, Typography } from "@mui/material";
 import { newAddingBtnStyle, pageHeaderStyle } from "../styles/globalStyles";
-import SalesModal from "../components/salesModal";
+import SalesModal from "../components/SalesModal";
 
 const Sales = () => {
   const { sales } = useSelector((state) => state.stock);
