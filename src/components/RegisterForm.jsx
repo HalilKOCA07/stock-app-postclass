@@ -47,6 +47,7 @@ const RegisterForm = ({
           onBlur={handleBlur}
           error={touched.username && Boolean(errors.username)}
           helperText={touched.username && errors.username}
+          sx={{boxShadow:3,  backgroundColor:"white"}}
         />
         <TextField
           label="First Name"
@@ -59,6 +60,7 @@ const RegisterForm = ({
           onBlur={handleBlur}
           error={touched.firstName && Boolean(errors.firstName)}
           helperText={touched.firstName && errors.firstName}
+          sx={{ boxShadow:3, backgroundColor:"white"}}
         />
         <TextField
           label="Last Name"
@@ -71,6 +73,7 @@ const RegisterForm = ({
           onBlur={handleBlur}
           error={touched.lastName && Boolean(errors.lastName)}
           helperText={touched.lastName && errors.lastName}
+          sx={{ boxShadow:3, backgroundColor:"white"}}
         />
         <TextField
           label="Email"
@@ -83,6 +86,7 @@ const RegisterForm = ({
           onBlur={handleBlur}
           error={touched.email && Boolean(errors.email)}
           helperText={touched.email && errors.email}
+          sx={{ boxShadow:3, backgroundColor:"white"}}
         />
         <TextField
           label="password"
@@ -95,8 +99,9 @@ const RegisterForm = ({
           onBlur={handleBlur}
           error={touched.password && Boolean(errors.password)}
           helperText={touched.password && errors.password}
+          sx={{ boxShadow:3, backgroundColor:"white"}}
         />
-        <Button type="submit" variant="contained" size="large">
+        <Button sx={{boxShadow:3}} type="submit" variant="contained" size="large">
           Submit
         </Button>
       </Box>

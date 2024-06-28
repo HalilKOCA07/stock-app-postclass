@@ -3,7 +3,6 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import LockIcon from "@mui/icons-material/Lock";
-import image from "../assets/loginImage.png";
 import newCar from "../assets/loginNewCar.png";
 import oldCar from "../assets/loginOldCar.png";
 import title from "../assets/loginTitle.png";

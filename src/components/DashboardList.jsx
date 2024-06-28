@@ -23,9 +23,12 @@ import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import { useNavigate } from "react-router-dom";
 import useAuthRequest from "../services/useAuthRequest";
+import image from "../assets/dashboardListBg.png"
+import { useSelector } from "react-redux";
 
 const DashboardList = () => {
   const navigate = useNavigate();
+
   const icons = [
     {
       title: "Dashboard",
@@ -67,8 +70,9 @@ const DashboardList = () => {
           <ListItem
             key={item.title}
             disablePadding
+  
             sx={{
-              color: "white",
+              color: "white", backgroundImage:{image},
               "& .MuiSvgIcon-root": { color: "white" },
               "&:hover": { color: "red" },
               "&:hover .MuiSvgIcon-root": { color: "red" },
@@ -90,10 +94,10 @@ export default DashboardList;
 
 //todo **********  NAVLIST  ****************
 export const NavList = () => {
+  const {user} = useSelector((state) => state.stock)
   const navigate = useNavigate();
   const { logout } = useAuthRequest();
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
   // const settings = [
   //   { title: "Profile", path: "/stock/profile" },
   //   { title: "Logout" , action:"logout" },
@@ -108,7 +112,7 @@ export const NavList = () => {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+          <Avatar alt={user.name} src={user.image || user.name} />
         </IconButton>
       </Tooltip>
       <Menu

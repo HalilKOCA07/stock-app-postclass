@@ -4,7 +4,10 @@ import { Avatar, Box, Container, Grid, Link, Typography } from '@mui/material'
 import LockIcon from "@mui/icons-material/Lock"
 import { Formik } from 'formik'
 import RegisterForm, { registerSchema } from '../components/RegisterForm'
-import image from "../assets/result.svg"
+import image from "../assets/humanCarParts.png"
+import newCar from "../assets/loginNewCar.png";
+import oldCar from "../assets/loginOldCar.png";
+import title from "../assets/loginTitle.png";
 
 const Register = () => {
 
@@ -18,20 +21,35 @@ const Register = () => {
         direction="row-reverse"
         rowSpacing={{ sm: 3 }}
         sx={{
-          height: "100vh",
+          height: "50vh",
           p: 2,
         }}
       >
-        <Grid item xs={12}>
-          <Typography variant="h3" color="primary" align="center">
-            STOCK APP
-          </Typography>
+        <Grid
+          item
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            px:5
+          }}
+          xs={12}
+          mb={3}
+        >
+          <img src={oldCar} className="headCarImg" width={250} alt="loginOldCar" />
+          <img src={title} className="title" width="100%" alt="" />
+          <img src={newCar} className="headCarImg"  width={250} alt="loginNewCar" />
         </Grid>
-
+       <Grid item xs={0} sm={7} md={6}>
+          <Container sx={{mt:12}}>
+            <img width={700} src={image} alt="" />
+          </Container>
+        </Grid>
         <Grid item xs={12} sm={10} md={6}>
+          
           <Avatar
             sx={{
-              backgroundColor: "secondary.light",
+              backgroundColor: "#2AAAB6",
               m: "auto",
               width: 40,
               height: 40,
@@ -43,7 +61,6 @@ const Register = () => {
             variant="h4"
             align="center"
             mb={2}
-            color="secondary.light"
           >
             Register
           </Typography>
@@ -70,11 +87,6 @@ const Register = () => {
           </Box>
         </Grid>
 
-        <Grid item xs={0} sm={7} md={6}>
-          <Container>
-            <img src={image} alt="" />
-          </Container>
-        </Grid>
       </Grid>
     </Container>
   )
